@@ -1,0 +1,79 @@
+# cookbook filename: bash_profile
+
+# settings/bash_profile: Login shell environment settings
+# To re-read (and implement changes to this file) use:
+# source $SETTINGS/bash_profile
+
+# Fail-safe. This should be set when we're called, but if not, the
+# "not found" error messages should be pretty clear.
+# Use leading ':' to prevent this from being run as a program after
+# it is expanded.
+: ${SETTINGS:='SETTINGS_variable_not_set'}
+
+# DEBUGGING only--will break scp, rsync
+# echo "Sourcing $SETTINGS/bash_profile..."
+# export PS4='+xtrace $LINENO: '
+# set -x
+
+# Debugging/logging--will not break scp, rsync
+#case "$-" in
+#    *i*) echo "$(date '+%Y-%m-%d_%H:%M:%S_%Z') Interactive" \
+#              "$SETTINGS/bash_profile ssh=$SSH_CONNECTION" >> ~/rc.log ;;
+#    *  ) echo "$(date '+%Y-%m-%d_%H:%M:%S_%Z') Non-interactive" \
+#              "$SETTINGS/bash_profile ssh=$SSH_CONNECTION" >> ~/rc.log ;;
+#esac
+
+# Use the keychain (http://www.gentoo.org/proj/en/keychain/) shell script
+# to manage ssh-agent, if it's available. If it's not, you should look
+# into adding it.
+for path in $SETTINGS ${PATH//:/ }; do
+    if [ -x "$path/keychain" ]; then
+        # Load default id_rsa and/or id_dsa keys, add others here as needed
+        # See also --clear --ignore-missing --noask --quiet --time-out
+        $path/keychain ~/.ssh/id_?sa
+        break
+    fi
+done
+
+
+# Apply interactive subshell customizations to login shells too.
+# The system profile file in /etc probably already does this.
+# If not, it's probably better to do in manually in wherever you:
+# source "$SETTINGS/bash_profile"
+# But just in case...
+#for file in /etc/bash.bashrc /etc/bashrc ~/.bashrc; do
+#    [ -r "$file" ] && source $file && break # Use the first one found
+#done
+
+
+# Do site or host specific things here
+case $HOSTNAME in
+    *.company.com     ) # source $SETTINGS/company.com
+                      ;;
+    host1.*           ) # host1 stuff
+                      ;;
+    host2.company.com ) # source .bashrc.host2
+                      ;;
+    drake.*           ) # echo DRAKE in bash_profile.jp!
+                      ;;
+esac
+
+
+# Do this last because we basically fork off from here. If we exit screen
+# we return to a fully configured session. The screen session gets configured
+# as well, and if we never leave it, well, this session isn't that bloated.
+
+
+# Only run if we are not already running screen AND '~/.use_screen' exists.
+if [ $TERM != "screen" -a "$USING_SCREEN" != "YES" -a -f ~/.use_screen ]; then
+    # We'd rather use 'type -P' here, but that was added in bash-2.05b and we
+    # use systems we don't control with versions older than that. We can't
+    # easily use 'which' since on some systems that produces output whether
+    # the file is found or not.
+    for path in ${PATH//:/ }; do
+        if [ -x "$path/screen" ]; then
+            # If screen(1) exists and is executable, run our wrapper
+            [ -x "$SETTINGS/run_screen" ] && $SETTINGS/run_screen
+        fi
+    done
+fi
