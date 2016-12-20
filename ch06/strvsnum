@@ -6,7 +6,7 @@
 VAR1=" 05 "
 VAR2="5"
 
-printf "%s" "do they - eq as equal? "
+printf "%s" "do they -eq as equal? "
 if [ "$VAR1" -eq "$VAR2" ]
 then
     echo YES

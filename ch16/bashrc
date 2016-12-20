@@ -142,8 +142,8 @@ alias copy='cp'              # DOS-ish for cp
 alias cvsst='cvs -qn update' # Hack to get concise CVS status (like svn st)
 alias del='rm'               # DOS-ish for rm
 alias diff='\diff -u'        # Make unified diffs the default
-alias jdiff="\diff --side-by-side --ignore-case --ignore-blank-lines\
---ignore-all-space --suppress-common-lines" # Useful GNU diff command
+alias jdiff="\diff --side-by-side --ignore-case --ignore-blank-lines \
+  --ignore-all-space --suppress-common-lines" # Useful GNU diff command
 alias dir='ls'               # DOS-ish for ls
 alias hr='history -a && history -n' # Append current, then re-read history
 alias ipconfig='ifconfig'    # Windows-ish for ifconfig
@@ -153,13 +153,14 @@ alias move='mv'              # DOS-ish for mv
 alias ntsysv='rcconf'        # Debian rcconf is pretty close to Red Hat ntsysv
 alias pathping='mtr'         # mtr - a network diagnostic tool
 alias r='fc -s'              # Recall and execute 'command' starting with...
-alias rd='rmdir'             # DOS-ish for rmdir alias ren='mv' # DOS-ish for mv/rename
+alias rd='rmdir'             # DOS-ish for rmdir
+alias ren='mv'               # DOS-ish for mv/rename
 #alias rm='rm -i'            # Annoying Red Hat default from /root/.bashrc
 alias svnpropfix='svn propset svn:keywords "Id URL"'
 alias tracert='traceroute'   # DOS-ish for traceroute
 alias vzip='unzip -lvM'      # View contents of ZIP file
 alias wgetdir="wget --no-verbose --recursive --no-parent --no-directories \
---level=1"                   # Grab a whole directory using wget
+  --level=1"                 # Grab a whole directory using wget
 alias zonex='host -l'        # Extract (dump) DNS zone
 
 # if the script exists and is executable, create an alias to get

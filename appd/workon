@@ -13,11 +13,11 @@ LICENSE='GNU GENERAL PUBLIC LICENSE'
 CAT='/bin/cat'
 if [ "$1" = "-h" -o "$1" = "--help" -o -z "$1" ]; then
     ${CAT} <<-EoN
-    Usage: $0 {file}
+	Usage: $0 {file}
 
-    Work on a file in RCS. Create the RCS subdirectory if necessary.
-    Do the initial checkin if necessary, prompting for a message.
-    Must be in the same directory as the file to be worked on.
+	Work on a file in RCS.  Create the RCS subdirectory if necessary.
+	Do the initial checkin if necessary, prompting for a message.
+	Must be in the same directory as the file to be worked on.
 EoN
     exit 0
 fi
