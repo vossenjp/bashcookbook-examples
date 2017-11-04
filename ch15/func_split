@@ -12,7 +12,7 @@ function Split {
     local limit_size=$4
     local wc_option
 
-    # Sanity Checks
+    # Sanity checks
     if [ -z "$file" ]; then
         printf "%b" "Split: requires a file name!\n"
         return 1
@@ -22,7 +22,8 @@ function Split {
         return 1
     fi
     if [ -z "$limit_type" ]; then
-        printf "%b" "Split: requires a limit option (e.g. --lines), see 'man split'!\n"
+        printf "%b" \
+          "Split: requires a limit option (e.g. --lines), see 'man split'!\n"
         return 1
     fi
     if [ -z "$limit_size" ]; then
@@ -31,7 +32,7 @@ function Split {
     fi
 
     # Convert split options to wc options. Sigh.
-    # Not all options supported by all wc/split on all systems
+    # Not all options supported by all wc/splits on all systems
     case $limit_type in
         -b|--bytes)      wc_option='-c';;
         -C|--line-bytes) wc_option='-L';;
@@ -40,7 +41,7 @@ function Split {
 
     # If whatever limit is exceeded
     if [ "$(wc $wc_option $file | awk '{print $1}')" -gt $limit_size ]; then
-        # actually do something
+        # Actually do something
         split --verbose $limit_type $limit_size $file $prefix
     fi
 } # end of function Split

@@ -2,7 +2,7 @@
 # cookbook filename: dbiniter
 #
 # initialize databases from a standard file
-# creating databases as needed.
+# creating databases as needed
 
 DBLIST=$(mysql -e "SHOW DATABASES;" | tail -n +2)
 select DB in $DBLIST "new..."
@@ -15,7 +15,7 @@ do
         mysql -e "CREATE DATABASE IF NOT EXISTS $DB;"
     fi
 
-    if [ "$DB" ]
+    if [ -n "$DB" ]
     then
         echo Initializing database: $DB
         mysql $DB < ourInit.sql

@@ -1,6 +1,6 @@
 # cookbook filename: using_phases
 
-# Main Loop
+# Main loop
 until [ "$phase" = "Finished." ]; do
 
     case $phase in
@@ -48,7 +48,7 @@ until [ "$phase" = "Finished." ]; do
         * )
             echo "What the heck?!? We should never get HERE! Gonna croak!"
             echo "Try $0 -h"
-             exit 99
+            exit 99
             phase="Finished."
         ;;
     esac

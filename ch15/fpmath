@@ -1,0 +1,40 @@
+# cookbook filename: fpmath
+# using coproc for floating-point math
+
+# initialize the coprocess
+#   call this first
+#   before attempting any calls to fpmath
+function fpinit ()
+{
+    coproc /usr/bin/bc
+
+    bcin=${COPROC[1]}
+    bcout=${COPROC[0]}
+    echo "scale=5" >& ${bcin}
+}
+
+# compute with floating-point numbers
+#   by sending the args to bc
+#   then reading its response
+function fpmath()
+{
+    echo "$@" >& ${bcin}
+    if read -t 0.25 -u ${bcout} responz
+    then
+       echo "$responz"
+    fi
+}
+
+############################
+# main
+
+fpinit
+
+while read aline
+do
+    answer=$(fpmath "$aline")
+    if [[ -n $answer ]]
+    then
+       echo $answer
+    fi
+done

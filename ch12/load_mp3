@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# cookbook filename: load_mp3
+# Fill up my mp3 player with as many songs as will fit.
+# N.B.: This assumes that the mp3 player is mounted on /media/mp3
+#
+
+#
+# determine the size of a file
+#
+function FILESIZE ()
+{
+    FN=${1:-/dev/null}
+    if [[ -e $FN ]]
+    then
+        # FZ=$(stat -c '%b' "$FN")
+        set -- $(ls -s "$FN")
+        FZ=$1
+    fi
+}
+
+#
+# compute the free space on the mp3 player
+#
+function FREESPACE
+{
+    # FREE=$(df /media/mp3 | awk '/^\/dev/ {print $4}')
+    set -- $(df /media/mp3 | grep '^/dev/')
+    FREE=$4
+}
+
+# subtract the (given) file size from the (global) free space
+function REDUCE ()
+(( FREE-=${1:-0}))    # this works, but is unusual
+
+#
+# main:
+#
+let SUM=0                                            # <1>
+let COUNT=0
+export FZ
+export FREE
+FREESPACE                                            # <2>
+find . -name '*.mp3' -print | \                      # <3>
+( while read PATHNM                                  # <4>
+    do
+        FILESIZE "$PATHNM"
+        if ((FZ <= FREE))
+        then
+            echo loading $PATHNM
+            cp "$PATHNM" /media/mp3
+            if (( $? == 0 ))
+            then
+                let SUM+=FZ
+                let COUNT++
+                REDUCE $FZ
+            else
+                echo "bad copy of $PATHNM to /media/mp3"
+                rm -f /media/mp3/"${PATHNM##*/}"
+                # recompute because we don't know how far it got
+                FREESPACE
+            fi
+            # any reason to go on?
+            if (( FREE <= 0 ))
+            then
+                break
+            fi
+        else
+            echo skipping $PATHNM
+        fi
+    done
+    printf "loaded %d songs (%d blocks)" $COUNT $SUM
+    printf " onto /media/mp3 (%d blocks free)\n" $FREE
+)
+# end of script

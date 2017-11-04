@@ -9,7 +9,7 @@ for dir in ${PATH//:/ }; do
     if [ ! -d "$dir" ]; then
         printf "%b" "missing\t\t"
           (( exit_code++ ))
-    elif [ "$(ls -lLd $dir | grep '^d.......w. ')" ]; then
+    elif [ -n "$(ls -lLd $dir | grep '^d.......w. ')" ]; then
           printf "%b" "world writable\t"
           (( exit_code++ ))
     else

@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# cookbook filename: ff-sessions
+# Save/Restore FF sessions
+
+# Run from cron like:
+# 45 03,15 * * * opt/bin/ff-sess.sh qsave                               # <1>
+
+FF_DIR="$HOME/.mozilla/firefox"
+date=$(date '+%u_%a_%H')  # e.g.: 3_Wed_15                              # <2>
+
+case "$1" in
+    qsave    )  # Quiet save
+        cd $FF_DIR
+        rm -f ff_sessions_$date.zip                                     # <3>
+        zip -9qr ff_sessions_$date.zip */session*                       # <4>
+    ;;
+
+    save    )  # Noisy save (calls qsave)
+        echo "SAVING '$FF_DIR/*/session*' data into '$date' file"       # <5>
+        $0 qsave                                                        # <6>
+    ;;
+
+    restore )
+        [ -z "$2" ] && { echo "Need a date to restore from!"; exit 1; } # <7>
+        date="$2"                                                       # <8>
+        echo "Restoring session data from '$date' file"
+        cd $FF_DIR
+        unzip -o ff_sessions_$date.zip                                  # <9>
+    ;;
+
+    *       )                                                           # <10>
+        echo 'Save/Restore FF sessions'
+        echo "$0 save"
+        echo "$0 restore <date>"
+        echo "    e.g., $0 restore 3_Wed_15"
+    ;;
+esac

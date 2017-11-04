@@ -1,10 +1,9 @@
 # cookbook filename: inputrc
-
 # settings/inputrc: # readline settings
-# To re-read (and implement changes to this file) use:
+# To reread (and implement changes to this file) use:
 # bind -f $SETTINGS/inputrc
 
-# First, include any systemwide bindings and variable
+# First, include any system-wide bindings and variable
 # assignments from /etc/inputrc
 # (fails silently if file doesn't exist)
 $include /etc/inputrc
@@ -26,11 +25,11 @@ $if Bash
     set show-all-if-ambiguous on
 
   # From the readline documentation at
-  # http://tiswww.tis.case.edu/php/chet/readline/readline.html#SEC12
+  # https://cnswww.cns.cwru.edu/php/chet/readline/readline.html#SEC12
   # Macros that are convenient for shell interaction
   # edit the path
     "\C-xp": "PATH=${PATH}\e\C-e\C-a\ef\C-f"
-  # prepare to type a quoted word -- insert open and closed double quotes
+  # prepare to type a quoted word -- insert open and close double quotes
   # and move to just after the open quote
     "\C-x\"": "\"\"\C-b"
   # insert a backslash (testing backslash escapes in sequences and macros)
@@ -42,4 +41,44 @@ $if Bash
   # Edit variable on current line.
     #"\M-\C-v": "\C-a\C-k$\C-y\M-\C-e\C-a\C-y="
     "\C-xe": "\C-a\C-k$\C-y\M-\C-e\C-a\C-y="
+$endif
+
+# some defaults / modifications for the emacs mode
+$if mode=emacs
+
+  # allow the use of the Home/End keys
+    "\e[1~": beginning-of-line
+    "\e[4~": end-of-line
+
+  # allow the use of the Delete/Insert keys
+    "\e[3~": delete-char
+    "\e[2~": quoted-insert
+
+  # mappings for "page up" and "page down" to step to beginning/end of the history
+#    "\e[5~": beginning-of-history
+#    "\e[6~": end-of-history
+
+  # alternate mappings for "page up" and "page down" to search the history
+#    "\e[5~": history-search-backward
+#    "\e[6~": history-search-forward
+
+  # MUCH nicer up-arrow search behavior!
+    "\e[A": history-search-backward  ## up-arrow
+    "\e[B": history-search-forward   ## down-arrow
+
+  # mappings for Ctrl-left-arrow and Ctrl-right-arrow for word moving
+  ### These were/are broken, and /etc/inputrc has better anyway
+#    "\e[5C": forward-word
+#    "\e[5D": backward-word
+#    "\e\e[C": forward-word
+#    "\e\e[D": backward-word
+
+  # for non RH/Debian xterm, can't hurt for RH/Debian xterm
+    "\eOH": beginning-of-line
+    "\eOF": end-of-line
+
+  # for FreeBSD console
+    "\e[H": beginning-of-line
+    "\e[F": end-of-line
+
 $endif

@@ -8,7 +8,7 @@ bflag=
 # since we don't want getopts to generate error
 # messages, but want this script to issue its
 # own messages, we will put, in the option list, a
-# leading ':' v---here to silence  getopts.
+# leading ':' to silence getopts.
 while getopts :ab: FOUND
 do
     case $FOUND in
@@ -18,11 +18,11 @@ do
             bval="$OPTARG"
             ;;
         \:) printf "argument missing from -%s option\n" $OPTARG
-            printf "Usage: %s: [-a] [-b value] args\n" $(basename $0)
+            printf "Usage: %s: [-a] [-b value] args\n" ${0##*/}
             exit 2
             ;;
         \?) printf "unknown option: -%s\n" $OPTARG
-            printf "Usage: %s: [-a] [-b value] args\n" $(basename $0)
+            printf "Usage: %s: [-a] [-b value] args\n" ${0##*/}
             exit 2
             ;;
         esac >&2

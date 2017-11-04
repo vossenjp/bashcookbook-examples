@@ -22,11 +22,11 @@ function shift_by {
 # If $1 is zero or greater than $#, the positional parameters are
 # not changed. In this case that is a BAD THING!
 if (( $1 == 0 || $1 > ( $# - 1 ) )); then
-   echo ''
+    echo ''
 else
-   # Remove the given number of objects (plus 1) from the list.
-   shift $(( $1 + 1 ))
-   # Return whatever is left
-   echo "$*"
- fi
+    # Remove the given number of objects (plus 1) from the list.
+    shift $(( $1 + 1 ))
+    # Return whatever is left.
+    echo "$*"
+fi
 }

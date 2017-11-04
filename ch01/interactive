@@ -3,7 +3,7 @@
 
 case "$-" in
     *i*) # Code for interactive shell here
-         ;;
-    *)   # Code for non-interactive shell here
-         ;;
+     ;;
+    *)   # Code for noninteractive shell here
+     ;;
 esac

@@ -6,7 +6,7 @@ until [ "$CHOICE" = "y" ]; do
     if [ -z "$CHOICE" ]; then
         CHOICE='y'
     elif [ "$CHOICE" != "y" ]; then
-        printf "%b" "Overriding $THISPACKAGE with ${CHOICE}\n"
+        printf "%b" "Overriding $THISPACKAGE with $CHOICE\n"
         THISPACKAGE=$CHOICE
     fi
 done

@@ -1,6 +1,8 @@
-#
+#!/usr/bin/awk -f
 # cookbook filename: asar.awk
-#
+# Associative arrays in Awk
+# Usage: ls -lR /usr/local | asar.awk
+
 NF > 7 {
     user[$3]++
 }

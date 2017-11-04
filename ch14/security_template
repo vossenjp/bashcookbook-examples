@@ -6,7 +6,7 @@ PATH='/usr/local/bin:/bin:/usr/bin'
 # It's almost certainly already marked for export, but make sure
 \export PATH
 
-# Clear all aliases. Important: leading \ inhibits alias expansion
+# Clear all aliases. Important: leading \ inhibits alias expansion.
 \unalias -a
 
 # Clear the command path hash
@@ -20,8 +20,8 @@ IFS=$' \t\n'
 
 # Set a sane/secure umask variable and use it
 # Note this does not affect files already redirected on the command line
-# 002 results in 0774 perms, 077 results in 0700 perms, etc...
-UMASK=002
+# 022 results in 0755 perms, 077 results in 0700 perms, etc.
+UMASK=022
 umask $UMASK
 
 until [ -n "$temp_dir" -a ! -d "$temp_dir" ]; do

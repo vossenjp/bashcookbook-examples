@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+# cookbook filename: ad
+# O'Reilly "book" tool wrapper for Asciidoc
+
+# Trivial sanity checks                                                # <1>
+[ -n "$BOOK_ASC" ] || {
+    echo "FATAL: must export \$BOOK_ASC to the location of '...bcb2/head/asciidoc/'!"
+    exit 1
+}
+\cd "$BOOK_ASC" || {
+    echo "FATAL: can't cd to '$BOOK_ASC'!"
+    exit 2
+}
+
+SELF="$0"    # For clarity in recursion                                # <2>
+
+action="$1"  # For code readability                                    # <3>
+shift        # Remove that argument from the list                      # <4>
+
+# If `xsel` is executable and we have no more arguments...             # <5>
+[ -x /usr/bin/xsel -a $# -lt 1 ] && {
+    # Read/write the clipboard
+    text=$(xsel -b)
+    function Output {
+        echo -en "$*" | xsel -bi
+    }
+} || {  # Otherwise...
+    # Read/write STDIN/STDOUT
+    text=$*
+    function Output {
+        echo -en "$*"
+    }
+}
+
+case "$action" in
+
+    #######################################################################
+    # Content/Markup
+
+    rec|recipe )         # Create the tags for a new recipe            # <6>
+        id="$($SELF id $text)"  # Create an "ID"                       # <7>
+        Output "$(cat <<- EoF                                          # <8>
+			[[$id]]
+			=== $text
+
+			[[problem-$id]]
+			==== Problem
+
+			[[solution-$id]]
+			==== Solution
+
+			[[discussion-$id]]
+			==== Discussion
+
+			[[see_also-$id]]
+			==== See Also
+			* \`man \`
+			* item1
+			* <<xref-id-here>>
+			* URL[text]
+			EoF
+            )"
+    ;;
+
+    table )              # Create the tags for a new table             # <9>
+        Output "$(cat <<- EoF
+			.A Table
+			[options="header"]
+			|=======
+			|head|h|h
+			|cell|c|c
+			|cell|c|c
+			|=======
+			EoF
+            )"
+    ;;
+
+# ...
+    ### Headers
+    h1 )                 # Inside chapter head 1 (really Asciidoc h3)  # <10>
+        Output "=== $text"
+    ;;
+    h2 )                 # Inside chapter head 2 (really Asciidoc h4)
+        Output "==== $text"
+    ;;
+    h3 )                 # Inside chapter head 3 (really Asciidoc h5)
+        Output "===== $text"
+    ;;
+
+    ### Lists
+    bul|bullet )         # Bullet list (.. = level 2, + = multiline element)
+        Output ". $text"
+    ;;
+    nul|number|order* )  # Num./ordered list (## = level 2, + = multiline element)
+        Output "# $text"
+    ;;
+    term )               # Terms
+        Output "term_here::\n  $text"                                  # <11>
+    ;;
+    # ...
+
+    cleanup )            ## Clean up all the xHTML/XML/PDF cruft
+        rm -fv {ch??,app?}.{pdf,xml,html} book.xml docbook-xsl.css     # <12>
+    ;;
+
+    * )                                                                # <13>
+        \cd - > /dev/null # UGLY cheat to revert the 'cd' above...
+            # See also: http://stackoverflow.com/questions/59895/
+            # can-a-bash-script-tell-what-directory-its-stored-in
+        ( echo "Usage:"
+        egrep '\)[[:space:]]+# '   $SELF
+        echo ''
+        egrep '\)[[:space:]]+## '  $SELF ) | more                      # <14>
+    ;;
+
+esac

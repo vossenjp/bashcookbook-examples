@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# cookbook filename: dash
+# dash - print a line of dashes
+# options: # how many (default 72)
+#         -c X use char X instead of dashes
+#
+function usagexit ( )
+{
+    printf "usage: %s [-c X] [#]\n" ${0##*/}  # <1>
+    exit 2
+} >&2
+
+LEN=72                                        # <2>
+CHAR='-'
+while (( $# > 0 ))                            # <3>
+do
+    case $1 in
+    [0-9]*) LEN=$1;;                          # <4>
+    -c) shift                                 # <5>
+        CHAR=$1;;
+    *) usagexit;;                             # <6>
+    esac
+    shift
+done
+
+if (( LEN > 4096 ))                           # <7>
+then
+    echo "too large" >&2
+    exit 3
+fi
+
+# build the string to the exact length
+DASHES=""
+for ((i=0; i<LEN; i++))
+do
+    DASHES="${DASHES}${CHAR}"
+done
+printf "%s\n" "$DASHES"

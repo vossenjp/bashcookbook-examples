@@ -14,11 +14,11 @@ then
         then
             doscience < "$INFILE" >> "$OUTFILE"
         else
-            echo "can not write to $OUTFILE"
+            echo "cannot write to $OUTFILE"
         fi
     else
-        echo "can not read from $INFILE"
+        echo "cannot read from $INFILE"
     fi
 else
-    echo "can not cd into $DIRPLACE"
+    echo "cannot cd into $DIRPLACE"
 fi

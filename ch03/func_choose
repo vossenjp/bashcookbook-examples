@@ -5,7 +5,7 @@
 # Called like: choose <default (y or n)> <prompt> <yes action> <no action>
 # e.g. choose "y" \
 #       "Do you want to play a game?" \
-#       /usr/games/GlobalThermonucularWar \
+#       /usr/games/GlobalThermonuclearWar \
 #       'printf "%b" "See you later Professor Falkin.\n"' >&2
 # Returns: nothing
 function choose {

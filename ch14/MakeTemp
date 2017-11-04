@@ -1,0 +1,59 @@
+# cookbook filename: MakeTemp
+# Function to incorporate or source into another script
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Try to create a secure temp file name or directory
+# Called like: $temp_file=$(MakeTemp <file|dir> [path/to/name-prefix])
+# Returns the name of secure temp file name or directory in $TEMP_NAME
+# For example:
+
+#        $temp_dir=$(MakeTemp dir /tmp/$PROGRAM.foo)
+#        $temp_file=$(MakeTemp file /tmp/$PROGRAM.foo)
+#
+function MakeTemp {
+
+    # Make sure $TMP is set to something
+    [ -n "$TMP" ] || TMP='/tmp'
+
+    local type_name=$1
+    local prefix=${2:-$TMP/temp} # Unless prefix is defined, use $TMP + temp
+    local temp_type=''
+    local sanity_check=''
+
+    case $type_name in
+        file )
+            temp_type=''
+            ur_cmd='touch'
+            #                  -f Regular file  -r Readable
+            #                  -w Writable      -O Owned by me
+            sanity_check='test -f $TEMP_NAME -a -r $TEMP_NAME \
+                            -a -w $TEMP_NAME -a -O $TEMP_NAME'
+            ;;
+        dir|directory )
+            temp_type='-d'
+            ur_cmd='mkdir -p -m0700'
+            #                  -d Directory     -r Readable
+            #                  -w Writable       -x Searchable   -O Owned by me
+            sanity_check='test -d $TEMP_NAME -a -r $TEMP_NAME \
+                            -a -w $TEMP_NAME -a -x $TEMP_NAME -a -O $TEMP_NAME'
+            ;;
+        * ) Error "\nBad type in $PROGRAM:MakeTemp! Needs file|dir." 1 ;;
+    esac
+
+    # First try mktemp
+    TEMP_NAME=$(mktemp $temp_type ${prefix}.XXXXXXXXX)
+
+    # If that fails try urandom, if that fails give up
+    if [ -z "$TEMP_NAME" ]; then
+        TEMP_NAME="${prefix}.$(cat /dev/urandom | od -x | tr -d ' ' | head -1)"
+        $ur_cmd $TEMP_NAME
+    fi
+
+    # Make sure the file or directory was actually created, or DIE
+    if ! eval $sanity_check; then
+        Error \
+        "\aFATAL ERROR: can't make temp $type_name with '$0:MakeTemp$*'!\n" 2
+    else
+        echo "$TEMP_NAME"
+    fi
+
+} # end of function MakeTemp

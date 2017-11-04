@@ -4,7 +4,7 @@
 # to tweak settings as required for your environment.
 case $HOSTNAME in
     *.company.com     ) MAILER='mail'   ;;  # Linux and BSD
-    host1.*           ) MAILER='mailx'  ;;  # Solaris, BSD and some Linux
+    host1.*           ) MAILER='mailx'  ;;  # Solaris, BSD, and some Linuxes
     host2.*           ) MAILER='mailto' ;;  # Handy, if installed
 esac
 RECIPIENTS='recipient1@example.com recipient2@example.com'

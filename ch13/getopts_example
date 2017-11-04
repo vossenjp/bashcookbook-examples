@@ -13,7 +13,7 @@ do
         b) bflag=1
            bval="$OPTARG"
            ;;
-        ?) printf "Usage: %s: [-a] [-b value] args\n" $(basename $0) >&2
+        ?) printf "Usage: %s: [-a] [-b value] args\n" ${0##*/} >&2
            exit 2
            ;;
     esac
@@ -22,10 +22,10 @@ shift $(($OPTIND - 1))
 
 if [ "$aflag" ]
 then
-  printf "Option -a specified\n"
+    printf "Option -a specified\n"
 fi
 if [ "$bflag" ]
 then
-  printf 'Option -b "%s" specified\n' "$bval"
+    printf 'Option -b "%s" specified\n' "$bval"
 fi
 printf "Remaining arguments are: %s\n" "$*"

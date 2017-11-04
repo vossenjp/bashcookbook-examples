@@ -4,10 +4,11 @@
 # if statement
 # test a string to see if it has any length
 #
-# use the command line argument
+# use the command-line argument
 VAR="$1"
 #
-if [ "$VAR" ]
+# if [ "$VAR" ] will usually work but is bad form, using -n is more clear
+if [ -n "$VAR" ]
 then
     echo has text
 else

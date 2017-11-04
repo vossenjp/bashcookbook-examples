@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # cookbook filename: rpncalc
 #
-# simple RPN command line (integer) calculator
+# simple RPN command-line (integer) calculator
 #
 # takes the arguments and computes with them
 # of the form a b op

@@ -1,4 +1,5 @@
 # cookbook filename: add_to_bashrc
+# Add this code to your ~/.bashrc
 
 # If we're running in bash, and it isn't already set,
 # search for then source our settings

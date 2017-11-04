@@ -4,11 +4,11 @@
 # use and consume an option
 #
 # parse the optional argument
-VERBOSE=0;
+VERBOSE=0
 if [[ $1 = -v ]]
 then
-    VERBOSE=1;
-    shift;
+    VERBOSE=1
+    shift
 fi
 #
 # the real work is here

@@ -1,7 +1,8 @@
 # cookbook filename: add_to_bash_profile
+# Add this code to your ~/.bash_profile
 
 # If we're running in bash, search for then source our settings
-# You can also just hard code $SETTINGS, but this is more flexible
+# You can also just hardcode $SETTINGS, but this is more flexible
 if [ -n "$BASH_VERSION" ]; then
     for path in /opt/bin /etc ~ ; do
         # Use the first one found
@@ -11,5 +12,5 @@ if [ -n "$BASH_VERSION" ]; then
         fi
     done
     source "$SETTINGS/bash_profile"
-    #source "$SETTINGS/bash_rc"      # If necessary
+    #source "$SETTINGS/bashrc"      # If necessary
 fi

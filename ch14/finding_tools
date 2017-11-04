@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # cookbook filename: finding_tools
 
-# export may or may not also be needed, depending on what you are doing
+# Export may or may not also be needed, depending on what you are doing
 
 # These are fairly safe bets
 _cp='/bin/cp'

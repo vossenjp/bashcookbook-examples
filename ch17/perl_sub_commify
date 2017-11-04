@@ -7,7 +7,7 @@
 sub commify {
     @_ == 1 or carp ('Sub usage: $withcomma = commify($somenumber);');
 
-    # From _Perl_Cookbook_1 page 64, 2.17 or _Perl_Cookbook_2 page 84, 2.16
+    # From _Perl_Cookbook_1 2.17, pg 64, or _Perl_Cookbook_2 2.16, pg 84
     my $text = reverse $_[0];
     $text =~ s/(\d\d\d)(?=\d)(?!\d*\.)/$1,/g;
     return scalar reverse $text;

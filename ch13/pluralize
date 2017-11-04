@@ -2,7 +2,7 @@
 # cookbook filename: pluralize
 #
 # A function to make words plural by adding an s
-# when the value ($2) is != 1 or -1
+# when the value ($2) is != 1 or -1.
 # It only adds an 's'; it is not very smart.
 #
 function plural ()

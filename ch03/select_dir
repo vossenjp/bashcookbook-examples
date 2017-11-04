@@ -22,4 +22,4 @@ until [ "$directory" == "Finished" ]; do
         fi # end of handle user's selection
 
     done # end of select a directory
-done # end of until we're finished
+done # end of until dir == finished

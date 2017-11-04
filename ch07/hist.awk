@@ -1,6 +1,8 @@
-#
+#!/usr/bin/awk -f
 # cookbook filename: hist.awk
-#
+# Histograms in Awk
+# Usage: ls -lR /usr/local | hist.awk
+
 function max(arr, big)
 {
     big = 0;
@@ -23,7 +25,7 @@ END {
         printf "%-10.10s [%8d]:", i, user[i]
         for (i=0; i<scaled; i++) {
             printf "#";
-          }
+        }
         printf "\n";
     }
 }

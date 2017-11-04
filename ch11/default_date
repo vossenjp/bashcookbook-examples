@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # cookbook filename: default_date
 
-# Use Noon time to prevent a script running around midnight and a clock a
+# Use noon time to prevent a script running around midnight and a clock a
 # few seconds off from causing off by one day errors.
 START_DATE=$(date -d 'last week Monday 12:00:00' '+%Y-%m-%d')
 
@@ -9,9 +9,9 @@ while [ 1 ]; do
     printf "%b" "The starting date is $START_DATE, is that correct? (Y/new date)"
     read answer
 
-    # Anything other than ENTER, "Y" or "y" is validated as a new date
-    # could use "[Yy]*" to allow the user to spell out "yes"...
-    # validate the new date format as: CCYY-MM-DD
+    # Anything other than ENTER, "Y", or "y" is validated as a new date
+    # Could use "[Yy]*" to allow the user to spell out "yes"...
+    # Validate the new date format as: CCYY-MM-DD
     case "$answer" in
         [Yy]) break
             ;;

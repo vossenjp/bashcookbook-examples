@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# cookbook filename: cdscript
+# cdscript - prep and burn a CD from a dir.
+#
+# usage: cdscript dir [ cddev ]
+#
+if (( $# < 1 || $# > 2 ))
+then
+    echo 'usage: cdscript dir [ cddev ]'
+    exit 2
+fi
+
+# set the defaults
+SRCDIR=$1
+# your device might be "ATAPI:0,0,0" or other digits
+CDDEV=${2:-"ATAPI:0,0,0"}
+ISOIMAGE=/tmp/cd$$.iso                                # <1>
+
+echo "building ISO image..."
+#
+# make the ISO fs image
+#
+mkisofs -A "$(cat ~/.cdAnnotation)" \
+  -p "$(hostname)" -V "${SRCDIR##*/}" \
+  -r -o "$ISOIMAGE" $SRCDIR
+STATUS=$?                                             # <2>
+if (( STATUS != 0 ))
+then
+    echo "Error. ISO image failed."
+    echo "Investigate then remove $ISOIMAGE"
+    exit $STATUS
+fi
+
+echo "ISO image built; burning to cd..."
+#
+# burn the CD
+#
+SPD=8
+OPTS="-eject -v fs=64M driveropts=burnproof"
+cdrecord $OPTS -speed=$SPD dev=${CDDEV} $ISOIMAGE
+STATUS=$?                                             # <3>
+if (( STATUS != 0 ))
+then
+    echo "Error. CD Burn failed."
+    echo "Investigate then remove $ISOIMAGE"
+    exit $STATUS
+fi
+
+rm -f $ISOIMAGE
+echo "Done."

@@ -5,13 +5,13 @@ case $raw_input in
         ;;
     *.jpg                ) # Probably a JPEG file
         ;;
-    *.[jJ][pP][gG]       ) # Probably a JPEG file, case insensitive
+    *.[jJ][pP][gG]       ) # Probably a JPEG file, case-insensitive
         ;;
-    foo | bar            ) # entered 'foo' or 'bar
+    foo | bar            ) # Entered 'foo' or 'bar
         ;;
-    [0-9][0-9][0-9]      ) # A 3 digit number
+    [0-9][0-9][0-9]      ) # A 3-digit number
         ;;
-    [a-z][a-z][a-z][a-z] ) # A 4 lower-case char word
+    [a-z][a-z][a-z][a-z] ) # A 4-lowercase-char word
         ;;
     *                    ) # None of the above
         ;;

@@ -20,7 +20,7 @@ function add_to_path {
     if [ $(echo $directory | grep '^/') ]; then
         :echo "$0:$FUNCNAME: '$directory' is absolute" >&2
     else
-        echo "$0:$FUNCNAME: can't add relative directory '$directory' to the \$PATH" >&2
+        echo "$0:$FUNCNAME: can't add relative directory '$directory' to \$PATH" >&2
         return 1
     fi
 
@@ -32,7 +32,7 @@ function add_to_path {
         return 1
     fi
 
-    # Make sure it's not already in the PATH
+    # Make sure it's not already in the $PATH
     if [ $(contains "$PATH" "$directory") ]; then
         echo "$0:$FUNCNAME: '$directory' already in \$PATH--aborting" >&2
     else
@@ -70,7 +70,7 @@ function rm_from_path {
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Remove leading/trailing or duplicate ':', remove duplicate entries
-# Returns: echos the "cleaned up" path
+# Returns: echoes the "cleaned up" path
 # Called like: cleaned_path=$(clean_path $PATH)
 function clean_path {
     local path=$1
