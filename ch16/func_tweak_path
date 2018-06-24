@@ -33,10 +33,10 @@ function add_to_path {
     fi
 
     # Make sure it's not already in the $PATH
-    if [ $(contains "$PATH" "$directory") ]; then
-        echo "$0:$FUNCNAME: '$directory' already in \$PATH--aborting" >&2
-    else
+    if $(contains "$PATH" "$directory"); then
         : echo "$0:$FUNCNAME: adding directory to \$PATH" >&2
+    else
+        echo "$0:$FUNCNAME: '$directory' already in \$PATH--aborting" >&2
     fi
 
     # Figure out what to do
