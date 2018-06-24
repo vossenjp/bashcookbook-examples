@@ -107,7 +107,7 @@ function contains {
 
     # This will be a case-sensitive comparison unless nocasematch is set
     case $pattern in
-        *:$target:* ) return 1;;
-        *           ) return 0;;
+        *:$target:* ) return 1 ;;
+        *           ) return 0 ;;
     esac
 } # end of function contains
