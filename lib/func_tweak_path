@@ -4,7 +4,7 @@
 # Add a directory to the beginning or end of your path as long as it's not
 # already present. Does not take into account symbolic links!
 # Returns: 1 or sets the new $PATH
-# Called like: add_to_path <directory> (pre|post)
+# Called like: add_to_path (pre|post) <directory>
 function add_to_path {
     local location=$1
     local directory=$2
@@ -12,13 +12,14 @@ function add_to_path {
     # Make sure we have something to work with
     if [ -z "$location" -o -z "$directory" ]; then
         echo "$0:$FUNCNAME: requires a location and a directory to add" >&2
+        echo "Usage: add_to_path (pre|post) <directory>" >&2
         echo "e.g. add_to_path pre /bin" >&2
         return 1
     fi
 
     # Make sure the directory is not relative
     if [ $(echo $directory | grep '^/') ]; then
-        :echo "$0:$FUNCNAME: '$directory' is absolute" >&2
+        : echo "$0:$FUNCNAME: '$directory' is absolute" >&2
     else
         echo "$0:$FUNCNAME: can't add relative directory '$directory' to \$PATH" >&2
         return 1
@@ -33,10 +34,10 @@ function add_to_path {
     fi
 
     # Make sure it's not already in the $PATH
-    if [ $(contains "$PATH" "$directory") ]; then
-        echo "$0:$FUNCNAME: '$directory' already in \$PATH--aborting" >&2
+    if $(contains "$PATH" "$directory"); then
+        : echo "$0:$FUNCNAME: adding directory to \$PATH" >&2
     else
-        :echo "$0:$FUNCNAME: adding directory to \$PATH" >&2
+        echo "$0:$FUNCNAME: '$directory' already in \$PATH--aborting" >&2
     fi
 
     # Figure out what to do
@@ -106,7 +107,7 @@ function contains {
 
     # This will be a case-sensitive comparison unless nocasematch is set
     case $pattern in
-        *:$target:* ) return 1;;
-        *           ) return 0;;
+        *:$target:* ) return 1 ;;
+        *           ) return 0 ;;
     esac
 } # end of function contains
